@@ -8,3 +8,5 @@ Description: List files in a directory of common file types (eg, vbr, tsv)
 Depends: R (>= 3.2.2)
 License: GPL-3
 LazyData: TRUE
+URL: http://github.com/dennismalandro/remisc
+BugReports: http://github.com/dennismalandro/remisc/issues
