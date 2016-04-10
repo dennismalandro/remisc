@@ -7,7 +7,6 @@
 #' @export
 #' @examples
 #' edf(rnorm(9))
-
 edf <- function(x, adjust = TRUE) {
   cdf <- stats::ecdf(x)(x)
   cdf - adjust / (2 * length(x))
@@ -63,4 +62,39 @@ list_vbrs <- function(path = '.', full.names = FALSE, recursive = FALSE)
 color_hue <- function(n, deg = 15, l = 65) {
   hues = seq(deg, deg + 360, length = n + 1)
   hcl(h = hues, l = l, c = 100)[1:n]
+}
+
+
+#' Weibull transform
+#'
+#' @export
+weibull_transform <- function(p) log(-log(1 - p))
+#' @export
+weibull_inverse_transform <- function(x) 1 - exp(-exp(x))
+#' @export
+weibull_trans <- function()
+  trans_new("weibull",
+            weibull_transform,
+            weibull_inverse_transform)
+
+#' Arrhenius transform
+#'
+#' @export
+arrhenius_transform <- function(degC) 1 / (degC + 273.15)
+#' @export
+arrhenius_inverse_transform <- function(Arr) 1 / Arr - 273.15
+#' @export
+arrhenius_trans <- function()
+  trans_new("arrhenius",
+            arrhenius_transform,
+            arrhenius_inverse_transform)
+
+
+#' User-friendly X-vector generator for DOE
+#' Ironically, not factors
+#' @export
+make_x <- function(levels = c('lo', 'hi'), reps = 1, n = length(levels) * reps) {
+  if(length(n) > 1) n <- length(n)
+  gl(n = length(levels), k = reps, length = n, labels = levels) %>%
+    as.character
 }
