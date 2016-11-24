@@ -1,11 +1,12 @@
 Package: remisc
 Type: Package
 Title: Miscellaneous Helper Functions
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: person("Dennis", "Malandro", email = "dennismalandro@gmail.com", role = c("aut", "cre"))
 Description: List files in a directory of common file types (eg, vbr, tsv)
 Depends:
     R (>= 3.2.2)
+Imports: purrr
 License: GPL-3
 LazyData: TRUE
 URL: http://github.com/dennismalandro/remisc

@@ -96,5 +96,31 @@ arrhenius_trans <- function()
 make_x <- function(levels = c('lo', 'hi'), reps = 1, n = length(levels) * reps) {
   if(length(n) > 1) n <- length(n)
   gl(n = length(levels), k = reps, length = n, labels = levels) %>%
-    as.character
-}
+    as.character}
+
+
+#' tidyverse-like \code{stats::acf} replacement
+#' @param x Numeric vector
+#' @param max_lag \code{stats::acf} default is \code{10 * log10(length(x))}
+
+#' @export
+acf <- function(x, max_lag = NULL, demean = TRUE) {
+
+  # acf extraction helper function -------------------
+  extract_acf <- function(acf_obj) {
+    lags <- seq_len(max(acf_obj$lag))
+
+    acf_obj <- acf_obj[lags]$acf
+    dim(acf_obj) <- NULL
+    acf_obj}
+
+  # calculate acfs ----------------------------------
+  acfs <- purrr::map(c('correlation', 'partial'),
+    ~stats::acf(x = x, type = ., lag.max = max_lag,
+      demean = demean, plot = FALSE))
+
+  purrr::map(acfs, extract_acf) %>%
+    purrr::set_names(c('acf', 'pacf')) %>%
+    bind_cols() %>%
+    mutate(lag = seq_along(acf)) %>%
+    select(lag, acf, pacf)}

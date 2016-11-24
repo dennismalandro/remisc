@@ -1,3 +1,4 @@
 # remisc
 Miscellaneous R helper functions
-Mostly for HALT
+- Transformations for HALT
+- Tidyverse-inspired acf function 
